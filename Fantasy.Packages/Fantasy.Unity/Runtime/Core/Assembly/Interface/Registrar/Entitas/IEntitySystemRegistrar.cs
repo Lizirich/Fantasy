@@ -99,7 +99,7 @@ namespace Fantasy.Assembly
         /// </summary>
         /// <returns>Func 委托数组，每个委托接收 Entity 参数，执行传送结束后逻辑</returns>
         Func<Entity, FTask>[] TransferInHandles();
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
         /// <summary>
         /// 获取所有注册了 LateUpdate 系统的实体类型句柄数组（仅 Unity 平台）
         /// 与 LateUpdateHandles() 一一对应，用于建立实体类型到 LateUpdate 处理器的映射关系

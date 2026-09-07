@@ -43,7 +43,7 @@ namespace Fantasy.DataStructure.Dictionary
 
         internal static ReadOnlySpan<int> Primes => s_primes;
 #endif
-#if FANTASY_NET
+#if FANTASY_NET || FANTASY_CONSOLE
         /// <summary>
         /// 质数表，用于哈希表大小计算。
         /// </summary>

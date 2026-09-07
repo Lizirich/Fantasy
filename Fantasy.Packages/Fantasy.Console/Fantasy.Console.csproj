@@ -1,0 +1,107 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PackageId>Fantasy-Console</PackageId>
+        <PackageVersion>2026.1.2002</PackageVersion>
+        <Title>Fantasy-Console</Title>
+        <Authors>qq362946</Authors>
+        <owners>qq362946</owners>
+        <PackageOutputPath>../../nupkg</PackageOutputPath>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <Description>
+            Fantasy console client library. Provides the Fantasy client runtime for plain .NET hosts (console apps, bots, automated tests, headless clients, robot/stress tools) without any Unity dependency.</Description>
+        <Copyright>Copyright 2026 qq362946</Copyright>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageProjectUrl>https://github.com/qq362946/Fantasy</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/qq362946/Fantasy</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>Net, c#, Client, Game, GameClient, Fantasy, Network, Console</PackageTags>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>Fantasy-Console</AssemblyName>
+        <TargetFrameworks Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '10.0.100'))">net8.0;net9.0;net10.0</TargetFrameworks>
+        <TargetFrameworks Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '9.0.100')) and !$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '10.0.100'))">net8.0;net9.0</TargetFrameworks>
+        <TargetFrameworks Condition="!$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '9.0.100'))">net8.0</TargetFrameworks>
+        <LangVersion>default</LangVersion>
+        <!-- 源码来自Fantasy.Unity的Runtime/Core，与Unity客户端共享同一份实现 -->
+        <FantasyCoreRoot>../Fantasy.Unity/Runtime/Core</FantasyCoreRoot>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DefineConstants>TRACE;FANTASY_CONSOLE</DefineConstants>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <NoWarn>1701;1702;CS8600;CS8601</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DefineConstants>TRACE;FANTASY_CONSOLE</DefineConstants>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <NoWarn>1701;1702;CS8600;CS8601</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!--
+            只编译Runtime/Core，并排除另外两个平台的入口目录：
+              Platform/Unity - 依赖UnityEngine
+              Platform/Net   - 依赖服务端配置表/服务发现/ASP.NET Core
+        -->
+        <Compile Include="$(FantasyCoreRoot)/**/*.cs"
+                 Exclude="$(FantasyCoreRoot)/Platform/Unity/**/*.cs;$(FantasyCoreRoot)/Platform/Net/**/*.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!--
+            注意：不引用Microsoft.AspNetCore.App，也不引用MongoDB.Driver。
+            客户端不需要HTTP服务端与数据库驱动。
+            MongoDB.Bson仍需要，因为Entity上标注了Bson相关特性。
+        -->
+        <PackageReference Include="MemoryPack.Core" Version="1.21.4" />
+        <PackageReference Include="MongoDB.Bson" Version="3.10.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+        <PackageReference Include="System.IO.Pipelines" Version="9.0.10" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!--
+            框架自身也必须运行Source Generator：
+            TimerComponentUpdateSystem等框架内置系统需要被注册，
+            否则TimerComponent.Update永不执行，await WaitAsync会永久挂起。
+        -->
+        <ProjectReference Include="..\Fantasy.SourceGenerator\Fantasy.SourceGenerator.csproj"
+                          OutputItemType="Analyzer"
+                          ReferenceOutputAssembly="false"
+                          SetTargetFramework="TargetFramework=netstandard2.0" />
+    </ItemGroup>
+
+    <!--
+        注意：通过 ProjectReference 引用本项目的下游工程不会自动继承上面的 Analyzer。
+        下游工程（业务程序集）必须自己也引用一次 Fantasy.SourceGenerator，
+        否则下游自己的协议 / Handler / EntitySystem 不会生成注册代码，
+        表现为运行期 "RuntimeTypeHandle not found in dictionary"。
+        参考 examples/Console/Fantasy.Console.Entity/Fantasy.Console.Entity.csproj 的写法。
+        （通过 NuGet 包引用时，analyzers/dotnet/cs 由 NuGet 自动传递，无需手动引用。）
+    -->
+
+    <ItemGroup>
+        <!-- MSBuild 集成：供下游项目自动定义 FANTASY_CONSOLE -->
+        <None Include="build\Fantasy-Console.props" Pack="true" PackagePath="build" />
+        <None Include="build\Fantasy-Console.targets" Pack="true" PackagePath="build;buildTransitive" />
+        <None Include="build\modules\*.targets" Pack="true" PackagePath="build\modules;buildTransitive\modules" />
+    </ItemGroup>
+
+    <!-- 将 Source Generator 打包到 NuGet -->
+    <ItemGroup>
+        <None Include="..\Fantasy.SourceGenerator\bin\$(Configuration)\netstandard2.0\Fantasy.SourceGenerator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="LICENSE" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+</Project>

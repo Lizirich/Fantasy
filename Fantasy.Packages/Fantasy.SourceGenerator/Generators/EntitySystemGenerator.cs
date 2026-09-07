@@ -589,7 +589,7 @@ namespace Fantasy.SourceGenerator.Generators
             // Deserialize
             GenerateSystemCode(builder, string.Empty, "DeserializeTypeHandles", "DeserializeHandles", deserialize);
             // LateUpdate
-            GenerateSystemCode(builder, "#if FANTASY_UNITY", "LateUpdateTypeHandles", "LateUpdateHandles", lateUpdate);
+            GenerateSystemCode(builder, "#if FANTASY_UNITY || FANTASY_CONSOLE", "LateUpdateTypeHandles", "LateUpdateHandles", lateUpdate);
             // TransferOut
             GenerateSystemCode(builder, string.Empty, "TransferOutTypeHandles", "TransferOutHandles", transferOut, true);
             // TransferIn

@@ -94,7 +94,7 @@ namespace Fantasy.Serialize
                     result = BsonPack.Deserialize<T>(bytes);
                     return true;   
 #endif
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     result = default!;
                     error =  $"Unknown protocol type: {opCodeProtocolType}";
                     return false;
@@ -135,7 +135,7 @@ namespace Fantasy.Serialize
                     result = BsonPack.Deserialize<T>(buffer);
                     return true;   
 #endif
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     result = default!;
                     error =  $"Unknown protocol type: {opCodeProtocolType}";
                     return false;
@@ -176,7 +176,7 @@ namespace Fantasy.Serialize
                     result = BsonPack.Deserialize(type, bytes);
                     return true;   
 #endif
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     result = null!;
                     error =  $"Unknown protocol type: {opCodeProtocolType}";
                     return false;
@@ -217,7 +217,7 @@ namespace Fantasy.Serialize
                     result = BsonPack.Deserialize(type, buffer);
                     return true;   
 #endif
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     result = null!;
                     error =  $"Unknown protocol type: {opCodeProtocolType}";
                     return false;
@@ -258,7 +258,7 @@ namespace Fantasy.Serialize
                     result = BsonPack.Deserialize<T>(bytes, index, count);
                     return true;   
 #endif
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     result = default!;
                     error =  $"Unknown protocol type: {opCodeProtocolType}";
                     return false;
@@ -299,7 +299,7 @@ namespace Fantasy.Serialize
                     result = BsonPack.Deserialize(type, bytes, index, count);
                     return true;   
 #endif
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     result = null!;
                     error =  $"Unknown protocol type: {opCodeProtocolType}";
                     return false;
@@ -340,7 +340,7 @@ namespace Fantasy.Serialize
                     result = BsonPack.Serialize<T>(obj);
                     return true;   
 #endif
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     result = null!;
                     error =  $"Unknown protocol type: {opCodeProtocolType}";
                     return false;
@@ -381,7 +381,7 @@ namespace Fantasy.Serialize
                     BsonPack.Serialize<T>(obj, buffer);
                     return true;   
 #endif
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     error =  $"Unknown protocol type: {opCodeProtocolType}";
                     return false;
 #endif
@@ -420,7 +420,7 @@ namespace Fantasy.Serialize
                     BsonPack.Serialize(type, obj, buffer);
                     return true;   
 #endif
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     error =  $"Unknown protocol type: {opCodeProtocolType}";
                     return false;
 #endif
@@ -461,7 +461,7 @@ namespace Fantasy.Serialize
                     result = BsonPack.Clone<T>(obj);
                     return true;   
 #endif
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     result = default;
                     error =  $"Unknown protocol type: {opCodeProtocolType}";
                     return false;

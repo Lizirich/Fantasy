@@ -13,7 +13,7 @@ namespace Fantasy.Entitas
 #if FANTASY_UNITY
         public override void Serialize<TBufferWriter>(ref MemoryPackWriter<TBufferWriter> writer, ref EntityMultiCollection? value)
 #endif
-#if FANTASY_NET
+#if FANTASY_NET || FANTASY_CONSOLE
         public override void Serialize<TBufferWriter>(ref MemoryPackWriter<TBufferWriter> writer, scoped ref EntityMultiCollection? value)
 #endif
         {
@@ -59,7 +59,7 @@ namespace Fantasy.Entitas
 #if FANTASY_UNITY
         public override void Deserialize(ref MemoryPackReader reader, ref EntityMultiCollection? value)
 #endif
-#if FANTASY_NET
+#if FANTASY_NET || FANTASY_CONSOLE
         public override void Deserialize(ref MemoryPackReader reader, scoped ref EntityMultiCollection? value)
 #endif
         {

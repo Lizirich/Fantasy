@@ -122,7 +122,26 @@ namespace Fantasy.SourceGenerator.Common
         
         /// <summary>
         /// 检查是否定义了 Fantasy 框架的预编译符号
-        /// 只有定义了 FANTASY_NET 或 FANTASY_UNITY 的项目才会生成代码
+        /// 只有定义了 FANTASY_CONSOLE的项目才会生成代码
+        /// </summary>
+        public static bool HasFantasyCONSOLEDefine(Compilation compilation)
+        {
+            // 遍历所有语法树的预处理符号
+            foreach (var tree in compilation.SyntaxTrees)
+            {
+                var defines = tree.Options.PreprocessorSymbolNames;
+                if (defines.Contains("FANTASY_CONSOLE"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 检查是否定义了 Fantasy 框架的预编译符号
+        /// 只有定义了 FANTASY_NET、FANTASY_UNITY 或 FANTASY_CONSOLE 的项目才会生成代码
         /// </summary>
         public static bool HasFantasyDefine(Compilation compilation)
         {
@@ -130,7 +149,7 @@ namespace Fantasy.SourceGenerator.Common
             foreach (var tree in compilation.SyntaxTrees)
             {
                 var defines = tree.Options.PreprocessorSymbolNames;
-                if (defines.Contains("FANTASY_NET") || defines.Contains("FANTASY_UNITY"))
+                if (defines.Contains("FANTASY_NET") || defines.Contains("FANTASY_UNITY") || defines.Contains("FANTASY_CONSOLE"))
                 {
                     return true;
                 }
@@ -240,6 +259,14 @@ namespace Fantasy.SourceGenerator.Common
             if (HasFantasyNETDefine(compilation))
             {
                 return 1;   // Server
+            }
+
+            // Console客户端是标准的.NET宿主环境，和服务端一样使用[ModuleInitializer]自动初始化。
+            // 必须在FANTASY_UNITY判断之前，否则会被误判为Unity环境导致生成
+            // [RuntimeInitializeOnLoadMethod]，在非Unity宿主下自动初始化不会执行。
+            if (HasFantasyCONSOLEDefine(compilation))
+            {
+                return 1;   // Console
             }
 
             if (HasFantasyUNITYDefine(compilation))

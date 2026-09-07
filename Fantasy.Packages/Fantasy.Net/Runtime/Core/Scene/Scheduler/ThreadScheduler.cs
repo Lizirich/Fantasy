@@ -32,7 +32,7 @@ namespace Fantasy
             MainScheduler.Update();
         }
 
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
         internal static void LateUpdate()
         {
             MainScheduler.LateUpdate();

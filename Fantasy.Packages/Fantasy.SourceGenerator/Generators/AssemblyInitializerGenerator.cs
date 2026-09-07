@@ -252,7 +252,7 @@ namespace Fantasy.SourceGenerator.Generators
             builder.AppendLine("memoryPackEntityGenerator);");
             builder.Unindent();
             builder.AppendLine("#endif", false);
-            builder.AppendLine("#if FANTASY_UNITY", false);
+            builder.AppendLine("#if FANTASY_UNITY || FANTASY_CONSOLE", false);
             builder.AppendLine("Fantasy.Assembly.AssemblyManifest.Register(");
             builder.Indent();
             builder.AppendLine("_assemblyManifestId,");

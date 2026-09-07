@@ -30,7 +30,7 @@ namespace Fantasy
         {
             if (log == null)
             {
-#if FANTASY_NET
+#if FANTASY_NET || FANTASY_CONSOLE
                 _logCore = new ConsoleLog();
 #endif
 #if FANTASY_UNITY

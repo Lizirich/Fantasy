@@ -44,7 +44,7 @@ namespace Fantasy
             EntityPool = rootScene.EntityPool;
             EventAwaiterPool = rootScene.EventAwaiterPool;
             SceneUpdate = rootScene.SceneUpdate;
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
             SceneLateUpdate = rootScene.SceneLateUpdate;
 #endif
             TimerComponent = rootScene.TimerComponent;
@@ -181,7 +181,7 @@ namespace Fantasy
                         $"SubScene SceneConfigId:{SceneConfigId} " +
                         $"Entity:{entity?.GetType().FullName ?? "null"} " +
                         $"RuntimeId:{runtimeId} dispose failed.\n{e}");
-#elif FANTASY_UNITY
+#elif FANTASY_UNITY || FANTASY_CONSOLE
                      Log.Error(
                         $"Entity:{entity?.GetType().FullName ?? "null"} " +
                         $"RuntimeId:{runtimeId} dispose failed.\n{e}");

@@ -208,7 +208,7 @@ namespace Fantasy.Entitas
             {
                 scene.EntityComponent.Awake(entity);
                 scene.EntityComponent.RegisterUpdate(entity);
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                 scene.EntityComponent.RegisterLateUpdate(entity);
 #endif
             }
@@ -280,7 +280,7 @@ namespace Fantasy.Entitas
             {
                 scene.EntityComponent.Awake(entity);
                 scene.EntityComponent.RegisterUpdate(entity);
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                 scene.EntityComponent.RegisterLateUpdate(entity);
 #endif
             }
@@ -311,7 +311,7 @@ namespace Fantasy.Entitas
             
             Scene.EntityComponent.Awake(entity);
             Scene.EntityComponent.RegisterUpdate(entity);
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
             Scene.EntityComponent.RegisterLateUpdate(entity);
 #endif
             return entity;
@@ -336,7 +336,7 @@ namespace Fantasy.Entitas
             
             Scene.EntityComponent.Awake(entity);
             Scene.EntityComponent.RegisterUpdate(entity);
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
             Scene.EntityComponent.RegisterLateUpdate(entity);
 #endif
             return entity;
@@ -462,7 +462,7 @@ namespace Fantasy.Entitas
             
             Scene.EntityComponent.Awake(entity);
             Scene.EntityComponent.RegisterUpdate(entity);
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
             Scene.EntityComponent.RegisterLateUpdate(entity);
 #endif
             return entity;
@@ -903,7 +903,7 @@ namespace Fantasy.Entitas
                 scene.AddEntity(this);
                 scene.EntityComponent.Deserialize(this);
                 scene.EntityComponent.RegisterUpdate(this);
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                 scene.EntityComponent.RegisterLateUpdate(this);
 #endif
             }

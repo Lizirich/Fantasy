@@ -13,7 +13,7 @@ namespace Fantasy
         }
     }
 
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
     internal interface ISceneLateUpdate
     {
         void LateUpdate();

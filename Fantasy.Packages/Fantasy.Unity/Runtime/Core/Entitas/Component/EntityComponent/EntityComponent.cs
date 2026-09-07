@@ -32,7 +32,7 @@ namespace Fantasy.Entitas
     /// 实体组件系统管理器，负责管理所有实体的生命周期和系统调度
     /// 支持程序集热重载、实体生命周期事件和每帧更新循环
     /// </summary>
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
     public sealed class EntityComponent : Entity, ISceneUpdate, ISceneLateUpdate, IAssemblyLifecycle
 #else
     public sealed class EntityComponent : Entity, ISceneUpdate, IAssemblyLifecycle
@@ -60,7 +60,7 @@ namespace Fantasy.Entitas
         /// 更新节点字典，Key为实体RuntimeId，Value为对应的链表节点，用于快速查找和删除
         /// </summary>
         private readonly Dictionary<long, LinkedListNode<UpdateQueueNode>> _updateNodes = new();
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
         private RuntimeTypeHandleFrozenDictionary<Action<Entity>> _lateUpdateSystems;
         private readonly TypeHandleMergerFrozenDictionary<Action<Entity>> _lateUpdateSystemMerger = new();
         /// <summary>
@@ -84,7 +84,7 @@ namespace Fantasy.Entitas
             
             _updateQueue.Clear();
             _updateNodes.Clear();
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
             _lateUpdateQueue.Clear();
             _lateUpdateNodes.Clear();
 #endif
@@ -165,7 +165,7 @@ namespace Fantasy.Entitas
                     _deserializeSystems = _deserializeSystemMerger.GetFrozenDictionary();
                     _transferOutSystems = _transferOutSystemMerger.GetFrozenDictionary();
                     _transferInSystems = _transferInSystemMerger.GetFrozenDictionary();
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     _lateUpdateSystemMerger.Add(
                     assemblyManifestId,
                     entitySystemRegistrar.LateUpdateTypeHandles(),
@@ -219,7 +219,7 @@ namespace Fantasy.Entitas
                         _transferInSystems = _transferInSystemMerger.GetFrozenDictionary();
                     }
                 
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     if(_lateUpdateSystemMerger.Remove(assemblyManifestId))
                     {
                         _lateUpdateSystems = _lateUpdateSystemMerger.GetFrozenDictionary();
@@ -237,7 +237,7 @@ namespace Fantasy.Entitas
                         }
                         node = next;
                     }
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     var lateNode = _lateUpdateQueue.First;
                     while (lateNode != null)
                     {
@@ -464,7 +464,7 @@ namespace Fantasy.Entitas
         #endregion
 
         #region LateUpdate
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
         /// <summary>
         /// 注册实体到每帧更新循环
         /// 实体将在每帧LateUUpdate时执行对应的LateUUpdateSystem

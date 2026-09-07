@@ -1,15 +1,21 @@
-﻿using Fantasy.Async;
+using Fantasy.Async;
 using Fantasy.Network;
 
 namespace Fantasy.Console.Entity;
 
+/// <summary>
+/// 控制台客户端示例：连接Gate、发送消息、发起RPC。
+/// </summary>
 public static class Entry
 {
-    private static Scene _scene;
-    private static Session _session;
+    private static Scene _scene = null!;
+    private static Session _session = null!;
+
     public static async FTask Show()
     {
-        _scene = await Fantasy.Scene.Create(SceneRuntimeMode.MainThread);
+        // Entry.CreateScene 已经创建好Scene，这里直接复用，避免重复创建。
+        _scene = Fantasy.Platform.Console.Entry.Scene;
+
         _session = _scene.Connect(
             "127.0.0.1:20000",
             NetworkProtocolType.KCP,
@@ -17,47 +23,33 @@ public static class Entry
             OnConnectFail,
             OnConnectDisconnect,
             false, 5000);
+
+        await FTask.CompletedTask;
     }
-    
+
     private static void OnConnectComplete()
     {
         Log.Debug("连接成功");
-        // Session.AddComponent<SessionHeartbeatComponent>();
-        // 添加心跳组件给Session。
-        // Start(2000)就是2000毫秒。
+
+        // 添加心跳组件给Session，2000表示2000毫秒发送一次心跳。
         _session.AddComponent<SessionHeartbeatComponent>().Start(2000);
-            
-        // _session.Send(new C2G_TestMessage()
-        // {
-        //     Tag = "111111111111"
-        // });
-        TestSend1000().Coroutine();
+
+        SendAndCall().Coroutine();
     }
 
-    private static int Index;
-    private static async FTask TestSend1000()
+    private static async FTask SendAndCall()
     {
-        Log.Debug($"Call 1{Thread.CurrentThread.ManagedThreadId}");
-        
-        await _session.Call(new C2G_TestRequest()
-        {
-            Tag = "111"
-        });
-        
-        Log.Debug($"Call 2{Thread.CurrentThread.ManagedThreadId}");
-        
-        // _session.Dispose();
-        
-        // for (int i = 0; i < 1000; i++)
-        // {
-        // _session.Send(new C2G_TestMessage()
-        // {
-        //     Tag = $"{++Index}"
-        // });
-        // // }
-        // await _session.Scene.TimerComponent.Net.WaitAsync(3000);
-        // _session.Dispose();
-        await FTask.CompletedTask;
+        // 1) 单向消息
+        var message = C2G_TestMessage.Create();
+        message.Tag = "console-send";
+        _session.Send(message);
+        Log.Debug("已发送 C2G_TestMessage");
+
+        // 2) RPC请求，等待服务端应答
+        var request = C2G_TestRequest.Create();
+        request.Tag = "console-call";
+        var response = (G2C_TestResponse)await _session.Call(request);
+        Log.Debug($"收到 G2C_TestResponse ErrorCode={response.ErrorCode} Tag={response.Tag}");
     }
 
     private static void OnConnectFail()

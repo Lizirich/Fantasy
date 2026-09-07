@@ -25,7 +25,7 @@ public sealed class EntityTimeoutComponent : Entity
 #if FANTASY_UNITY
     public void SetDestroyTimeout(int timeout = 3000, Func<FTask> task = null)
 #endif
-#if FANTASY_NET
+#if FANTASY_NET || FANTASY_CONSOLE
     public void SetDestroyTimeout(int timeout = 3000, Func<FTask>? task = null)
 #endif
     {
@@ -80,7 +80,7 @@ public sealed class EntityTimeoutComponent : Entity
 #if FANTASY_UNITY
     private async FTask Handler(long parentRunTimeId, Func<FTask> task = null)
 #endif
-#if FANTASY_NET
+#if FANTASY_NET || FANTASY_CONSOLE
     private async FTask Handler(long parentRunTimeId, Func<FTask>? task = null)
 #endif
     {

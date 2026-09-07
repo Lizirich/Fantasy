@@ -78,7 +78,7 @@ namespace Fantasy.EventAwaiter
             _scene  = scene;
             _callback = callback;
             // 创建一次性定时器，超时后自动触发 Action 委托
-#if FANTASY_NET
+#if FANTASY_NET || FANTASY_CONSOLE
             _timerId = _scene.TimerComponent.Net.OnceTimer(timeoutMs, Action);
 #elif FANTASY_UNITY
             _timerId = _scene.TimerComponent.Unity.OnceTimer(timeoutMs, Action);
@@ -120,7 +120,7 @@ namespace Fantasy.EventAwaiter
             // 归还时取消未执行的定时器并清理引用
             if (_timerId != 0)
             {
-#if FANTASY_NET
+#if FANTASY_NET || FANTASY_CONSOLE
                 _scene.TimerComponent.Net.Remove(ref _timerId);
 #elif FANTASY_UNITY
                 _scene.TimerComponent.Unity.Remove(ref _timerId);

@@ -223,7 +223,7 @@ namespace Fantasy.Assembly
             _ = ObserveLifecycleTask(AssemblyLifecycle.OnLoad(manifest));
         }
 #endif
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
         /// <summary>
         /// 注册程序集清单
         /// 此方法由 Source Generator 生成的 ModuleInitializer 自动调用

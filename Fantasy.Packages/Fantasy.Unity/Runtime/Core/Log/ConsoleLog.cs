@@ -1,6 +1,8 @@
-#if FANTASY_NET
+#if FANTASY_NET || FANTASY_CONSOLE
 using System;
+#if FANTASY_NET
 using Fantasy.Platform.Net;
+#endif
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace Fantasy;
@@ -15,7 +17,9 @@ public sealed class ConsoleLog : ILog
     /// </summary>
     /// <param name="appId"></param>
     /// <param name="processMode"></param>
+#if FANTASY_NET
     public void Initialize(string appId, ProcessMode processMode) { }
+#endif
 
     /// <summary>
     /// 记录跟踪级别的日志消息。

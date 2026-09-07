@@ -233,7 +233,7 @@ namespace Fantasy
                 await SphereEventComponent.Initialize();
 #endif
                 SceneUpdate = EntityComponent;
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                 SceneLateUpdate = EntityComponent;
 #endif
             }
@@ -451,7 +451,7 @@ namespace Fantasy
                                 $"SceneConfigId:{SceneConfigId} " +
                                 $"Entity:{entity?.GetType().FullName ?? "null"} " +
                                 $"RuntimeId:{runtimeId} dispose failed.\n{e}");
-#elif FANTASY_UNITY
+#elif FANTASY_UNITY || FANTASY_CONSOLE
                              Log.Error(
                                 $"Entity:{entity?.GetType().FullName ?? "null"} " +
                                 $"RuntimeId:{runtimeId} dispose failed.\n{e}");
@@ -460,7 +460,7 @@ namespace Fantasy
                     }
 
                     _entities.Clear();
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     _unityWorldId--;
                     _unitySceneId--;
 #endif
@@ -510,7 +510,7 @@ namespace Fantasy
             TerminusComponent = null;
             RoamingComponent = null;
             SphereEventComponent = null;
-#elif FANTASY_UNITY
+#elif FANTASY_UNITY || FANTASY_CONSOLE
             Session = null;
             UnityNetwork = null;
             SceneLateUpdate = null;
@@ -542,7 +542,7 @@ namespace Fantasy
                 Log.Error(e);
             }
         }
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
         internal ISceneLateUpdate SceneLateUpdate { get; set; }
         internal void LateUpdate()
         {
@@ -825,7 +825,7 @@ namespace Fantasy
                 {
                     scene.ThreadSynchronizationContext = ThreadScheduler.MainScheduler.ThreadSynchronizationContext;
                     scene.SceneUpdate = new EmptySceneUpdate();
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     scene.SceneLateUpdate = new EmptySceneLateUpdate();
 #endif
                     ThreadScheduler.AddMainScheduler(scene);
@@ -838,7 +838,7 @@ namespace Fantasy
                     scene.ThreadSynchronizationContext = new ThreadSynchronizationContext();
 #endif
                     scene.SceneUpdate = new EmptySceneUpdate();
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     scene.SceneLateUpdate = new EmptySceneLateUpdate();
 #endif
                     scene.SceneScheduler = ThreadScheduler.AddToMultiThreadScheduler(scene);
@@ -850,7 +850,7 @@ namespace Fantasy
                     scene.ThreadSynchronizationContext = new ThreadSynchronizationContext();   
 #endif
                     scene.SceneUpdate = new EmptySceneUpdate();
-#if FANTASY_UNITY
+#if FANTASY_UNITY || FANTASY_CONSOLE
                     scene.SceneLateUpdate = new EmptySceneLateUpdate();
 #endif
                     scene.SceneScheduler = ThreadScheduler.AddToThreadPoolScheduler(scene);

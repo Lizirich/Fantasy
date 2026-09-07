@@ -29,7 +29,7 @@ namespace Fantasy
 #if FANTASY_UNITY
         public static void SetDestroyTimeout(this Entity self, int timeout = 3000, Func<FTask> task = null)
 #endif
-#if FANTASY_NET
+#if FANTASY_NET || FANTASY_CONSOLE
         public static void SetDestroyTimeout(this Entity self, int timeout = 3000, Func<FTask>? task = null)
 #endif
         {
