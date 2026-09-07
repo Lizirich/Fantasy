@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -20,14 +20,19 @@
 
     <ItemGroup>
       <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
-      <PackageReference Include="MongoDB.Bson" Version="2.29.0" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="MongoDB.Bson" Version="3.10.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
       <PackageReference Include="protobuf-net" Version="3.2.30" />
-      <PackageReference Include="System.IO.Pipelines" Version="8.0.0" />
+      <PackageReference Include="System.IO.Pipelines" Version="9.0.10" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Fantays.Console\Fantasy.Console.csproj" />
+      <ProjectReference Include="..\Fantasy.Packages\Fantasy.Console\Fantasy.Console.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <!-- 业务程序集需自行引用一次 Source Generator，Analyzer 不沿 ProjectReference 传递 -->
+      <ProjectReference Include="..\Fantasy.Packages\Fantasy.SourceGenerator\Fantasy.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
 </Project>
